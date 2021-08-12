@@ -18,9 +18,11 @@ class Command(BaseCommand):
             name,
             cover,
             platforms,
-            genres,
+            genres.name,
             first_release_date,
-            involved_companies,
+            involved_companies.company.name,
+            involved_companies.developer,
+            involved_companies.publisher,
             summary,
             age_ratings,
             aggregated_rating,
@@ -43,81 +45,81 @@ class Command(BaseCommand):
                 else:
                     break
 
-        def getCovers(headers):
-            with open('coverdb.txt', 'w') as file:
-                file.write('')
+        # def getCovers(headers):
+        #     with open('coverdb.txt', 'w') as file:
+        #         file.write('')
 
-            counter = 0
-            while True:
-                response = requests.post('https://api.igdb.com/v4/covers', headers=headers, data=f'fields url; limit 500; offset {counter};')
-                counter += 500
-                print(counter)
-                time.sleep(.25)
-                if response.json():
-                    with open('coverdb.txt', 'a') as file:
-                        for cover in response.json():
-                            file.write(json.dumps(cover))
-                            file.write('\n')
-                else:
-                    break
+        #     counter = 0
+        #     while True:
+        #         response = requests.post('https://api.igdb.com/v4/covers', headers=headers, data=f'fields url; limit 500; offset {counter};')
+        #         counter += 500
+        #         print(counter)
+        #         time.sleep(.25)
+        #         if response.json():
+        #             with open('coverdb.txt', 'a') as file:
+        #                 for cover in response.json():
+        #                     file.write(json.dumps(cover))
+        #                     file.write('\n')
+        #         else:
+        #             break
 
-        def getPlatforms(headers):
-            with open('platformdb.txt', 'w') as file:
-                file.write('')
-            response = requests.post('https://api.igdb.com/v4/platforms', headers=headers, data='fields name; limit 500; sort id asc;')
-            with open('platformdb.txt', 'a') as file:
-                for platform in response.json():
-                    file.write(json.dumps(platform))
-                    file.write('\n')
+        # def getPlatforms(headers):
+        #     with open('platformdb.txt', 'w') as file:
+        #         file.write('')
+        #     response = requests.post('https://api.igdb.com/v4/platforms', headers=headers, data='fields name; limit 500; sort id asc;')
+        #     with open('platformdb.txt', 'a') as file:
+        #         for platform in response.json():
+        #             file.write(json.dumps(platform))
+        #             file.write('\n')
 
-        def getGenres(headers):
-            with open('genredb.txt', 'w') as file:
-                file.write('')
-            response = requests.post('https://api.igdb.com/v4/genres', headers=headers, data='fields name; limit 500; sort id asc;')
-            with open('genredb.txt', 'a') as file:
-                for genre in response.json():
-                    file.write(json.dumps(genre))
-                    file.write('\n')
+        # def getGenres(headers):
+        #     with open('genredb.txt', 'w') as file:
+        #         file.write('')
+        #     response = requests.post('https://api.igdb.com/v4/genres', headers=headers, data='fields name; limit 500; sort id asc;')
+        #     with open('genredb.txt', 'a') as file:
+        #         for genre in response.json():
+        #             file.write(json.dumps(genre))
+        #             file.write('\n')
 
-        def getInvolvedCompanies(headers):
-            with open('involvedcompanydb.txt', 'w') as file:
-                file.write('')
+        # def getInvolvedCompanies(headers):
+        #     with open('involvedcompanydb.txt', 'w') as file:
+        #         file.write('')
 
-            counter = 0
-            while True:
-                response = requests.post('https://api.igdb.com/v4/involved_companies', headers=headers, data=f'fields company,developer,publisher; limit 500; offset {counter};')
-                counter += 500
-                print(counter)
-                time.sleep(.25)
-                if response.json():
-                    with open('involvedcompanydb.txt', 'a') as file:
-                        for involvedcompany in response.json():
-                            file.write(json.dumps(involvedcompany))
-                            file.write('\n')
-                else:
-                    break
+        #     counter = 0
+        #     while True:
+        #         response = requests.post('https://api.igdb.com/v4/involved_companies', headers=headers, data=f'fields company,developer,publisher; limit 500; offset {counter};')
+        #         counter += 500
+        #         print(counter)
+        #         time.sleep(.25)
+        #         if response.json():
+        #             with open('involvedcompanydb.txt', 'a') as file:
+        #                 for involvedcompany in response.json():
+        #                     file.write(json.dumps(involvedcompany))
+        #                     file.write('\n')
+        #         else:
+        #             break
 
-        def getCompanies(headers):
-            with open('companydb.txt', 'w') as file:
-                file.write('')
+        # def getCompanies(headers):
+        #     with open('companydb.txt', 'w') as file:
+        #         file.write('')
 
-            counter = 0
-            while True:
-                response = requests.post('https://api.igdb.com/v4/companies', headers=headers, data=f'fields name; limit 500; offset {counter};')
-                counter += 500
-                print(counter)
-                time.sleep(.25)
-                if response.json():
-                    with open('companydb.txt', 'a') as file:
-                        for company in response.json():
-                            file.write(json.dumps(company))
-                            file.write('\n')
-                else:
-                    break
+        #     counter = 0
+        #     while True:
+        #         response = requests.post('https://api.igdb.com/v4/companies', headers=headers, data=f'fields name; limit 500; offset {counter};')
+        #         counter += 500
+        #         print(counter)
+        #         time.sleep(.25)
+        #         if response.json():
+        #             with open('companydb.txt', 'a') as file:
+        #                 for company in response.json():
+        #                     file.write(json.dumps(company))
+        #                     file.write('\n')
+        #         else:
+        #             break
 
         
 
-        # getGames(headers)
+        getGames(headers)
 
         # getCovers(headers)
 
@@ -125,7 +127,7 @@ class Command(BaseCommand):
 
         # getGenres(headers)
 
-        getInvolvedCompanies(headers)
+        # getInvolvedCompanies(headers)
 
         # getCompanies(headers)
 
