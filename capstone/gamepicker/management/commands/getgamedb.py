@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 import requests
-from secrets import client_id, secret_id
+from secretkeys import client_id, secret_id
 import time, json
 
 class Command(BaseCommand):
@@ -16,34 +16,49 @@ class Command(BaseCommand):
         def getGames(headers):
             fields = '''
             name,
-            cover,
-            platforms,
+            cover.url,
+            platforms.name,
             genres.name,
             first_release_date,
             involved_companies.company.name,
             involved_companies.developer,
             involved_companies.publisher,
             summary,
-            age_ratings,
-            aggregated_rating,
-            aggregated_rating_count
+            age_ratings.category,
+            age_ratings.rating,
+            rating,
+            rating_count
             '''
             with open('gamesdb.txt', 'w') as file:
                 file.write('')
 
             counter = 0
+            data = []
             while True:
                 response = requests.post('https://api.igdb.com/v4/games', headers=headers, data=f'fields {fields}; limit 500; offset {counter}; sort name asc;')
                 counter += 500
                 print(counter)
                 time.sleep(.25)
                 if response.json():
-                    with open('gamesdb.txt', 'a') as file:
-                        for game in response.json():
-                            file.write(json.dumps(game))
-                            file.write('\n')
+                    for game in response.json():
+                        data.append(json.dumps(game))
                 else:
                     break
+                #     with open('gamesdb.txt', 'a') as file:
+                #         for game in response.json():
+                #             file.write(json.dumps(game))
+                #             file.write('\n')
+                # else:
+                #     with open('gamesdb.txt', 'r+') as file:
+                #         data = file.readlines()
+                #         data = data[:-1]
+                #         data[-1] = data[-1].replace('\n', '')
+                #         file.writelines(data)
+                #     break
+            with open('gamesdb.txt', 'w') as file:
+                data = '\n'.join(data)
+                file.write(data)
+        getGames(headers)
 
         # def getCovers(headers):
         #     with open('coverdb.txt', 'w') as file:
@@ -119,7 +134,7 @@ class Command(BaseCommand):
 
         
 
-        getGames(headers)
+        
 
         # getCovers(headers)
 
