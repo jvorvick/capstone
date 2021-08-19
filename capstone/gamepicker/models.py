@@ -16,3 +16,9 @@ class Game(models.Model):
 
     def __str__(self):
         return self.name
+
+class Genre(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
