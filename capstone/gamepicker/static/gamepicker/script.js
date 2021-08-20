@@ -14,7 +14,6 @@ randomBtn.addEventListener('click', () => {
   getGame(game)
 })
 
-
 var elems = document.querySelectorAll('.autocomplete');
 var instances = M.Autocomplete.init(elems, {
   data: searchData,
@@ -32,25 +31,26 @@ var instances = M.Autocomplete.init(elems, {
     } else if (b.startsWith(inputString)) {
       return 1
     } 
-    console.log(a.localeCompare(b))
     // console.log(a, '@@@', b)
     return a.localeCompare(b);
   },
   
-});
-console.log(instances)
+}); 
 
-
-function filterGame(filter=false) {
-  searchData = {}
+function filterGame(filter=false, used, type) {
+  // searchData = {}
+  if (!used) {
+    searchData = {}
+    console.log('search data reset')
+  }
   if (!filter) {
     for (let game of gameData) {
-      searchData[game.name] = null;
+      searchData[game.name_and_date] = null;
     }
   } else {
     for (let game of gameData) {
-      if (game.genres === filter) {
-        searchData[game.name] = null;
+      if (game[type].split(', ').includes(filter)) {
+        searchData[game.name_and_date] = null;
       }
     }
     console.log(filter)

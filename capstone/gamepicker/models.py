@@ -3,6 +3,7 @@ from django.db import models
 # Create your models here.
 class Game(models.Model):
     name = models.CharField(max_length=200)
+    name_and_date = models.CharField(max_length=210)
     cover = models.URLField()
     platforms = models.CharField(max_length=50)
     genres = models.CharField(max_length=20)

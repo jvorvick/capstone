@@ -38,11 +38,16 @@ class Command(BaseCommand):
             if 'first_release_date' in entry:
                 release_date = entry['first_release_date']
                 if entry['first_release_date'] >= 0:
-                    game.first_release_date = datetime.utcfromtimestamp(release_date).strftime('%b %d, %Y')
+                    date = datetime.utcfromtimestamp(release_date)
+                    game.first_release_date = date.strftime('%b %d, %Y')
                 else:
-                    game.first_release_date = datetime(1970, 1, 1) + timedelta(seconds=release_date)
+                    date = datetime(1970, 1, 1) + timedelta(seconds=release_date)
+                    game.first_release_date = date
+                game.name_and_date = f'{game.name} ({date.year})'
             else:
                 game.first_release_date = ''
+                game.name_and_date = game.name
+            
             if 'involved_companies' in entry:
                 companies = [company['company']['name'] for company in entry['involved_companies']]
                 game.companies = ', '.join(companies)

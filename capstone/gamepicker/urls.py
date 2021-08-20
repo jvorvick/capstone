@@ -7,5 +7,5 @@ urlpatterns = [
     path('all/', views.all_games, name='all_games'),
     path('genres/', views.genres, name='genres'),
     path('platforms/', views.platforms, name='platforms'),
-    path('<str:game>/', views.get_game, name='get_game'),
+    path('<str:name_and_date>/', views.get_game, name='get_game'),
 ]

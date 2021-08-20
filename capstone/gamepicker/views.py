@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
-from .models import Game, Genre
+from .models import Game, Genre, Platform
 from django.shortcuts import get_object_or_404
 
 # Create your views here.
@@ -12,9 +12,9 @@ def all_games(request):
     
     return JsonResponse(games, safe=False)
 
-def get_game(request, game):
+def get_game(request, name_and_date):
     # title = Game.objects.filter(name=game)[0]
-    title = get_object_or_404(Game, name=game)
+    title = get_object_or_404(Game, name_and_date=name_and_date)
     print(title)
     game = {
         'name': title.name,
@@ -35,3 +35,8 @@ def genres(request):
     genres = list(Genre.objects.all().values())
 
     return JsonResponse(genres, safe=False)
+
+def platforms(request):
+    platforms = list(Platform.objects.all().values())
+
+    return JsonResponse(platforms, safe=False)

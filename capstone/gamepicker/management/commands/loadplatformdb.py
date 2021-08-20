@@ -1,12 +1,12 @@
 from django.core.management.base import BaseCommand
-from gamepicker.models import Genre
+from gamepicker.models import Platform
 import json
 
 
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        Genre.objects.all().delete()
+        Platform.objects.all().delete()
 
         with open('gamesdb.txt', 'r') as file:
             library = file.read()
@@ -15,9 +15,9 @@ class Command(BaseCommand):
         counter = 0
         for entry in library[-1::-1]:
             entry = json.loads(entry)
-            if 'genres' in entry:
-                for g in entry['genres']:
-                    genre = Genre.objects.get_or_create(name=g['name'])
+            if 'platforms' in entry:
+                for p in entry['platforms']:
+                    platform = Platform.objects.get_or_create(name=p['name'])
             counter += 1
             if counter % 1000 == 0:
                 percentage = counter / 155000 * 100
