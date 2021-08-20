@@ -3,12 +3,11 @@ document.addEventListener('DOMContentLoaded', function() {
   var instances = M.Dropdown.init(elems, {});
 });
 
-const dropDown = document.getElementById('dropdown1')
-const dropDownBtn = document.getElementById('dropdown-btn')
-
 fetch('http://localhost:8000/gamepicker/genres')
   .then((data) => data.json())
   .then((data) => {
+    const dropDown = document.getElementById('dropdown1')
+    const dropDownBtn = document.getElementById('dropdown-btn')
     for (genre of data) {
       const li = document.createElement('li')
       const a = document.createElement('a')
