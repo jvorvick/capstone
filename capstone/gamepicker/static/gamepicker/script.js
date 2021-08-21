@@ -1,23 +1,36 @@
 let gameData = []
 let searchData = {}
 const randomBtn = document.getElementById('random-btn')
+const searchBar = document.getElementById('autocomplete-input')
+
+const searchFilters = []
 
 randomBtn.addEventListener('click', () => {
   // const randomGame = gameData[Math.floor(Math.random()*gameData.length)]
+  // filterGame(searchFilters)
+
   const randomGame = function (searchData) {
     const keys = Object.keys(searchData)
+    if (keys.length === 0) {
+      return false
+    }
     console.log(keys)
     // return gameData[keys[keys.length * Math.random() << 0]]
     return keys[Math.floor(Math.random() * keys.length)]
   }
   const game = randomGame(searchData)
-  getGame(game)
+  if (game) {
+    getGame(game)
+  } else {
+    alert('No games match these filters.')
+  }
 })
 
 var elems = document.querySelectorAll('.autocomplete');
 var instances = M.Autocomplete.init(elems, {
   data: searchData,
   onAutocomplete: function (el) {
+    console.log(el)
     getGame(el);
   },
   // limit: 10,
@@ -37,24 +50,28 @@ var instances = M.Autocomplete.init(elems, {
   
 }); 
 
-function filterGame(filter=false, used, type) {
-  // searchData = {}
-  if (!used) {
-    searchData = {}
-    console.log('search data reset')
-  }
-  if (!filter) {
+
+// searchBar.addEventListener('click', () => {
+//   console.log('hi')
+//   filterGame(searchFilters)
+// })
+
+function filterGame(filters=false) {
+  searchData = {}
+  if (!filters) {
     for (let game of gameData) {
       searchData[game.name_and_date] = null;
     }
   } else {
-    for (let game of gameData) {
-      if (game[type].split(', ').includes(filter)) {
-        searchData[game.name_and_date] = null;
-      }
+    let temp = gameData
+    for (filter of filters) {
+      temp = temp.filter(game => game.genres.split(', ').includes(filter) || game.platforms.split(', ').includes(filter))
     }
-    console.log(filter)
+    for (let game of temp) {
+      searchData[game.name_and_date] = null;
+    }
   }
+  // game[type].split.(', ').incudes()
   instances[0].updateData(searchData)
 }
 
