@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Materialize -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+  <!-- Materialize Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!-- JS -->
+  <script defer src="{% static 'gamepicker/script.js' %}"></script>
+  <script defer src="{% static 'gamepicker/dropdown.js' %}"></script>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="{% static 'gamepicker/style.css' %}">
+
+  <title>{% block title %}{% endblock %}</title>
+</head>
+  <body>
+    {% include 'gamepicker/_navbar.html' %}
+    {% block content %}
+    {% endblock %}
+  </body>
+</html>

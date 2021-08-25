@@ -1,7 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, reverse
 from django.http import HttpResponse, JsonResponse
 from .models import Game, Genre, Platform
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import User
+from django.http.response import HttpResponseRedirect
+from django.contrib.auth import login, authenticate
 
 # Create your views here.
 def home(request):
@@ -40,3 +43,45 @@ def platforms(request):
     platforms = list(Platform.objects.all().values())
 
     return JsonResponse(platforms, safe=False)
+
+def signup(request):
+    print('METHOD', request.method)
+    if request.method == 'GET':
+        return render(request, 'gamepicker/signup.html')
+    elif request.method == "POST":
+        print(request.POST)
+
+        # get data from form
+        form = request.POST
+        first_name = form['first_name']
+        last_name = form['last_name']
+        username = form['username']
+        password = form['password']
+
+        user = User.objects.create_user(
+            username, password, first_name=first_name, last_name=last_name
+        )
+        
+        login(request, user)
+
+        return HttpResponseRedirect(reverse('gamepicker:home'))
+
+def login(request):
+    # user visits page
+    if request.method == 'GET':
+        return render(request, 'gamepicker/login.html')
+    # user submits form
+    elif request.method == 'POST':
+        print('FORM', request.POST)
+        
+        # get form data
+        form = request.POST
+        username = form['username']
+        password = form['password']
+
+        # authenticate user
+        user = authenticate(request, username=username, password=password)
+        print(user)
+        login(request, user)
+
+    return HttpResponseRedirect(reverse('gamepicker:home'))

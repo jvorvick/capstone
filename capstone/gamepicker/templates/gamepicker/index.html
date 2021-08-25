@@ -1,26 +1,11 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends 'gamepicker/base.html' %}
 
-  <!-- Materialize -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+{% block title %}Game Picker{% endblock %}
 
-  <!-- JS -->
-  <script defer src="{% static 'gamepicker/script.js' %}"></script>
-  <script defer src="{% static 'gamepicker/dropdown.js' %}"></script>
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="{% static 'gamepicker/style.css' %}">
-
-  <title>Game Picker</title>
-</head>
-<body>
-  <h3>Game Picker</h3>
+{% block content %}
+  {% if request.user.is_anonymous == False %}
+  <h5>Hello {{request.user}}</h5>
+  {% endif %}
   <div id="loading">
     <h4>loading...</h4>
   </div>
@@ -56,5 +41,4 @@
   </div>
   <div class="chips"></div>
   <div id="search-result"></div>
-</body>
-</html>
+{% endblock %}
