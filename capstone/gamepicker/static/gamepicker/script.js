@@ -147,6 +147,22 @@ function showGame(game) {
   searchResult.append(summary)
   searchResult.append(ageRatingCategory)
   searchResult.append(ageRatingRating)
+
+  // button to add to user collection
+  const button = document.createElement('a')
+  button.className = 'waves-effect waves-light btn'
+  button.textContent = 'Add to Collection'
+  searchResult.append(button)
+  if (game.in_collection) {
+    button.textContent = 'Added'
+    button.classList.add('disabled')
+  }
+  console.log(game)
+  button.addEventListener('click', () => {
+    fetch(`http://localhost:8000/gamepicker/collection/${game.name}`)
+    button.textContent = 'Added'
+    button.classList.add('disabled')
+  })
 }
 
 fetch('http://localhost:8000/gamepicker/all')

@@ -1,10 +1,11 @@
 from django.shortcuts import render, reverse
 from django.http import HttpResponse, JsonResponse
-from .models import Game, Genre, Platform
+from .models import Collection, Game, Genre, Platform
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from django.http.response import HttpResponseRedirect
 from django.contrib.auth import login, authenticate
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def home(request):
@@ -32,6 +33,12 @@ def get_game(request, name_and_date):
         'age_rating_category': title.age_rating_category,
         'age_rating_rating': title.age_rating_rating
     }
+
+    # check if game has been added to user's collection
+    if request.user.is_authenticated:
+        collection, _ = Collection.objects.get_or_create(user=request.user)
+        if collection.game.filter(name=title.name).exists():
+            game['in_collection'] = True
     return JsonResponse(game)
 
 def genres(request):
@@ -44,7 +51,7 @@ def platforms(request):
 
     return JsonResponse(platforms, safe=False)
 
-def signup(request):
+def user_signup(request):
     print('METHOD', request.method)
     if request.method == 'GET':
         return render(request, 'gamepicker/signup.html')
@@ -66,7 +73,7 @@ def signup(request):
 
         return HttpResponseRedirect(reverse('gamepicker:home'))
 
-def login(request):
+def user_login(request):
     # user visits page
     if request.method == 'GET':
         return render(request, 'gamepicker/login.html')
@@ -85,3 +92,11 @@ def login(request):
         login(request, user)
 
     return HttpResponseRedirect(reverse('gamepicker:home'))
+
+@login_required
+def add_collection(request, game):
+    collection, _ = Collection.objects.get_or_create(user=request.user)
+    add_game = get_object_or_404(Game, name=game)
+    collection.game.add(add_game)
+
+    return JsonResponse(game, safe=False)

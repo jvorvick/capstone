@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 # Create your models here.
@@ -29,3 +30,10 @@ class Platform(models.Model):
 
     def __str__(self):
         return self.name
+
+class Collection(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    game = models.ManyToManyField(Game)
+
+    def __str__(self):
+        return self.user.username
