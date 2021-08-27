@@ -9,6 +9,9 @@ urlpatterns = [
     path('platforms/', views.platforms, name='platforms'),
     path('signup/', views.user_signup, name='signup'),
     path('login/', views.user_login, name='login'),
-    path('collection/<str:game>/', views.add_collection, name='collection'),
+    path('logout/', views.user_logout, name='logout'),
+    path('user_page/', views.user_page, name='user_page'),
+    path('user_games/', views.user_games, name='user_games'),
+    path('collection/<int:id>/', views.add_collection, name='collection'),
     path('<str:name_and_date>/', views.get_game, name='get_game'),
 ]
