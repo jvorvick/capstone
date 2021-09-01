@@ -19,6 +19,7 @@ function filters() {
       filterGame(searchFilters)
 
     },
+    placeholder: 'Enter a tag',
     autocompleteOptions: {
       data: tagData
     }
@@ -27,7 +28,9 @@ function filters() {
   // dropdowns
   document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('.dropdown-trigger');
-    var instances = M.Dropdown.init(elems, {});
+    var instances = M.Dropdown.init(elems, {
+      constrainWidth: false
+    });
   });
 
   fetch('http://localhost:8000/gamepicker/genres')
@@ -49,13 +52,13 @@ function filters() {
         const li = document.createElement('li')
         const a = document.createElement('a')
         li.addEventListener('click', () => {
-          dropDownBtn.textContent = a.textContent
+          // dropDownBtn.textContent = a.textContent
           // filterGame(dropDownBtn.textContent, used, 'genres')
           // if (!searchFilters.includes(dropDownBtn.textContent)) {
           //   searchFilters.push(dropDownBtn.textContent)
           // }
           tagInstances[0].addChip({
-            tag: dropDownBtn.textContent
+            tag: a.textContent
           })
           filterGame(searchFilters)
         })
@@ -85,13 +88,13 @@ function filters() {
         const li = document.createElement('li')
         const a = document.createElement('a')
         li.addEventListener('click', () => {
-          dropDownBtn.textContent = a.textContent
+          // dropDownBtn.textContent = a.textContent
           // filterGame(dropDownBtn.textContent, used, 'platforms')
-          if (!searchFilters.includes(dropDownBtn.textContent)) {
-            searchFilters.push(dropDownBtn.textContent)
+          if (!searchFilters.includes(a.textContent)) {
+            searchFilters.push(a.textContent)
           }
           tagInstances[0].addChip({
-            tag: dropDownBtn.textContent
+            tag: a.textContent
           })
           console.log(searchFilters)
           filterGame(searchFilters)

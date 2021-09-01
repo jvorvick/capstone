@@ -202,9 +202,26 @@ function getUserGames() {
     })
 }
 
+function collectionDetails() {
+  const collection = document.getElementById('collection')
+  console.log(collection.children)
+  for (let child of collection.children) {
+    const details = child.querySelector('[id]')
+    console.log(details)
+    details.addEventListener('click', () => {
+      const game = details.id
+      getGame(game)
+    })
+    
+    
+
+  }
+}
+
 if (window.location.pathname == '/gamepicker/user_page/') {
   random()
   getUserGames()
+  collectionDetails()
 } else if (window.window.location.pathname == '/gamepicker/') {
   random()
   getAllGames()
