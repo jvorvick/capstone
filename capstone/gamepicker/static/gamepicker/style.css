@@ -1,3 +1,15 @@
 .hidden {
   visibility: hidden;
 }
+
+.input-field label {
+  color: #212121;
+}
+
+.chips input::placeholder {
+  color: #212121;
+}
+
+img {
+  max-width: 100%;
+}

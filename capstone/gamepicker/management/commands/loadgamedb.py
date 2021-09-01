@@ -20,7 +20,7 @@ class Command(BaseCommand):
             game.name = entry['name']
             if 'cover' in entry:
                 url = entry['cover']['url']
-                game.cover = url.replace('t_thumb', 't_cover_big')
+                game.cover = url.replace('t_thumb', 't_1080p')
             else:
                 game.cover = ''
             if 'platforms' in entry:
@@ -55,6 +55,10 @@ class Command(BaseCommand):
                 game.companies = ''
             game.companies_developer = False
             game.companies_publisher = False
+            if 'summary' in entry:
+                game.summary = entry['summary']
+            else:
+                game.summary = ''
             if 'age_ratings' in entry:
                 game.age_rating_category = entry['age_ratings'][0]['category']
                 game.age_rating_rating = entry['age_ratings'][0]['rating']

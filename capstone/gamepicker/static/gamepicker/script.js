@@ -90,32 +90,20 @@ function showGame(games) {
   searchResult.innerHTML = ''
 
   for (let game of games) {
-    const name = document.createElement('h3')
-    name.textContent = game.name
-    const cover = document.createElement('img')
-    cover.src = game.cover
-    cover.alt = game.name
-    const platforms = document.createElement('p')
-    platforms.textContent = game.platforms
-    const genres = document.createElement('p')
-    genres.textContent = game.genres
-    const first_release_date = document.createElement('p')
-    first_release_date.textContent = game.first_release_date
-    const companies = document.createElement('p')
-    companies.textContent = game.companies
-    const summary = document.createElement('p')
-    summary.textContent = game.summary
-
-    const ageRatingCategory = document.createElement('p')
+    // const ageRatingCategory = document.createElement('p')
     let ageRatingCategoryText = game.age_rating_category
+    console.log(ageRatingCategoryText)
     const ratingCategories = {
       1 : 'ESRB',
       2 : 'PEGI'
     }
-    ageRatingCategoryText = ratingCategories[ageRatingCategoryText]
-    ageRatingCategory.textContent = ageRatingCategoryText
+    
+    ageRatingCategoryText = ratingCategories[ageRatingCategoryText] ? ratingCategories[ageRatingCategoryText] + ': ' : ''
+    // ageRatingCategory.textContent = ageRatingCategoryText
 
-    const ageRatingRating = document.createElement('p')
+
+
+    // const ageRatingRating = document.createElement('p')
     let ageRatingRatingText = game.age_rating_rating
     const ratingRatings = {
       1 : 'Three',
@@ -131,30 +119,43 @@ function showGame(games) {
       11 : 'M',
       12 : 'AO'
     }
-    ageRatingRatingText = ratingRatings[ageRatingRatingText]
-    ageRatingRating.textContent = ageRatingRatingText
+    ageRatingRatingText = ratingRatings[ageRatingRatingText] || ''
+    // ageRatingRating.textContent = ageRatingRatingText
 
-    // const age_rating_category = document.createElement('p')
-    // age_rating_category.textContent = game.age_rating_category
-    // const age_rating_rating = document.createElement('p')
-    // age_rating_rating.textContent = game.age_rating_rating
+    
 
+    let div = document.createElement('div')
+    div.innerHTML = `
+    <h2 class="header">${game.name}</h2>
+    <div class="card horizontal">
+      <div class="card-image">
+        <img src="${game.cover}" alt="${game.name}">
+      </div>
+      <div class="card-stacked">
+        <div class="card-content">
+          <h5>Platforms</h5>
+          <p>${game.platforms}</p>
+          <h5>Genres</h5>
+          <p>${game.genres}</p>
+          <h5>Release Date</h5>
+          <p>${game.first_release_date}</p>
+          <h5>Developers/Publishers</h5>
+          <p>${game.companies}</p>
+          <h5>Summary</h5>
+          <p>${game.summary}</p>
+          <h5>Age Rating</h5>
+          <p>${ageRatingCategoryText}${ageRatingRatingText}</p>
+        </div>
+        <div class="card-action">
+          <a>Add to Collection</a>
+        </div>
+      </div>
+    </div>
+    `
 
-    searchResult.append(name)
-    searchResult.append(cover)
-    searchResult.append(platforms)
-    searchResult.append(genres)
-    searchResult.append(first_release_date)
-    searchResult.append(companies)
-    searchResult.append(summary)
-    searchResult.append(ageRatingCategory)
-    searchResult.append(ageRatingRating)
-
-    // button to add to user collection
-    const button = document.createElement('a')
-    button.className = 'waves-effect waves-light btn'
-    button.textContent = 'Add to Collection'
-    searchResult.append(button)
+    // link to add to user collection
+    const button = div.querySelector('a')
+    button.className = 'btn red darken-3'
     if (game.in_collection) {
       button.textContent = 'Added'
       button.classList.add('disabled')
@@ -173,6 +174,7 @@ function showGame(games) {
         button.classList.add('disabled')
       })
     })
+    searchResult.append(div)
   }
 }
 
