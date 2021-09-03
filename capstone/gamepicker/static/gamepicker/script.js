@@ -15,7 +15,6 @@ function random() {
       if (keys.length === 0) {
         return false
       }
-      console.log(keys)
       // return gameData[keys[keys.length * Math.random() << 0]]
       return keys[Math.floor(Math.random() * keys.length)]
     }
@@ -23,7 +22,13 @@ function random() {
     if (game) {
       getGame(game)
     } else {
-      alert('No games match these filters.')
+      const container = document.getElementById('container')
+      const main = document.getElementById('main')
+      const message = document.createElement('h5')
+      message.textContent = 'No games match these filters'
+      message.classList.add('red-text', 'text-darken-3')
+      container.insertBefore(message, main)
+      // alert('No games match these filters.')
     }
   })
 }
@@ -31,8 +36,7 @@ var elems = document.querySelectorAll('.autocomplete');
 var instances = M.Autocomplete.init(elems, {
   data: searchData,
   onAutocomplete: function (el) {
-    console.log(el)
-    getGame(el);
+    getGame(el)
   },
   // limit: 10,
   minLength: 3,
@@ -92,7 +96,6 @@ function showGame(games) {
   for (let game of games) {
     // const ageRatingCategory = document.createElement('p')
     let ageRatingCategoryText = game.age_rating_category
-    console.log(ageRatingCategoryText)
     const ratingCategories = {
       1 : 'ESRB',
       2 : 'PEGI'
@@ -122,13 +125,12 @@ function showGame(games) {
     ageRatingRatingText = ratingRatings[ageRatingRatingText] || ''
     // ageRatingRating.textContent = ageRatingRatingText
 
-    
 
     let div = document.createElement('div')
     div.innerHTML = `
-    <h2 class="header">${game.name}</h2>
-    <div class="card horizontal">
-      <div class="card-image">
+    <h2 id="game-title" class="header">${game.name}</h2>
+    <div id="search-card" class="card z-depth-0 grey lighten-4 horizontal">
+      <div class="card-image blue-grey lighten-3">
         <img src="${game.cover}" alt="${game.name}">
       </div>
       <div class="card-stacked">
@@ -153,6 +155,16 @@ function showGame(games) {
     </div>
     `
 
+    const categories = div.querySelectorAll('p')
+    
+    // only show h5 if corresponsing p has text
+    for (let p of categories) {
+      if (p.textContent === '') {
+        p.previousElementSibling.textContent = ''
+      }
+    }
+    
+
     // link to add to user collection
     const button = div.querySelector('a')
     button.className = 'btn red darken-3'
@@ -160,13 +172,9 @@ function showGame(games) {
       button.textContent = 'Added'
       button.classList.add('disabled')
     }
-    console.log(game)
-    console.log(game.id)
     button.addEventListener('click', () => {
-      console.log(game.id)
       fetch(`http://localhost:8000/gamepicker/collection/${game.id}`)
       .then(data => {
-        console.log(data.status)
         if (data.status == 299) {
           window.location = 'http://localhost:8000/gamepicker/login/'
         }
@@ -175,6 +183,25 @@ function showGame(games) {
       })
     })
     searchResult.append(div)
+    
+    // change card formation based on window size and page
+    const searchCard = searchResult.querySelector('#search-card')
+
+    if (window.outerWidth <= 600 || window.location.href.startsWith('http://localhost:8000/gamepicker/user_page/')) {
+      searchCard.classList.remove('horizontal')
+      searchCard.classList.add('vertical')
+    }
+
+    window.onresize = () => {
+      if (window.outerWidth <= 600 || window.location.href.startsWith('http://localhost:8000/gamepicker/user_page/')) {
+        searchCard.classList.remove('horizontal')
+        searchCard.classList.add('vertical')
+        console.log("I'm smol", window.innerWidth)
+      } else {
+        searchCard.classList.remove('vertical')
+        searchCard.classList.add('horizontal')
+      }
+    } 
   }
 }
 
@@ -204,26 +231,53 @@ function getUserGames() {
     })
 }
 
-function collectionDetails() {
+function collectionManage() {
   const collection = document.getElementById('collection')
   console.log(collection.children)
   for (let child of collection.children) {
-    const details = child.querySelector('[id]')
+    // const cardAction = child.getElementsByClassName('card-action')
+    const cardAction = child.querySelector('#collection-actions')
+    console.log(cardAction)
+    const details = cardAction.firstElementChild
     console.log(details)
+    
+    // click to show more details
     details.addEventListener('click', () => {
       const game = details.id
+      console.log('details', game)
       getGame(game)
     })
-    
-    
 
+    const remove = details.nextElementSibling
+
+    //click to remove from collection
+    remove.addEventListener('click', () => {
+      const game = remove.id
+      console.log('remove', game)
+      fetch(`http://localhost:8000/gamepicker/remove_collection/${game}`)
+      .then(() => {
+        console.log('refresh')
+        window.location = 'http://localhost:8000/gamepicker/user_page/'
+      })
+    })
+    console.log(remove)
   }
 }
+
+
+
+// sidebar
+document.addEventListener('DOMContentLoaded', function() {
+  var elems = document.querySelectorAll('.sidenav');
+  var instances = M.Sidenav.init(elems, {
+    edge: 'right'
+  });
+});
 
 if (window.location.pathname == '/gamepicker/user_page/') {
   random()
   getUserGames()
-  collectionDetails()
+  collectionManage()
 } else if (window.window.location.pathname == '/gamepicker/') {
   random()
   getAllGames()

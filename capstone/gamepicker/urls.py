@@ -13,5 +13,6 @@ urlpatterns = [
     path('user_page/', views.user_page, name='user_page'),
     path('user_games/', views.user_games, name='user_games'),
     path('collection/<int:id>/', views.add_collection, name='collection'),
+    path('remove_collection/<int:id>/', views.remove_collection, name='remove_collection'),
     path('<str:name_and_date>/', views.get_game, name='get_game'),
 ]

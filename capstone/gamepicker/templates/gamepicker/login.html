@@ -3,7 +3,10 @@
 {% block title %}Signup{% endblock %}
 
 {% block content %}
-  <div class="row">
+  <div class="row container">
+    {% if user == None %}
+    <h5 class="red-text text-darken-3">Username or password is not correct</h5>
+    {% endif %}
     <form action="{% url 'gamepicker:login' %}" method="POST" class="col s12">
       {% csrf_token %}
       <h3>Login</h3>
@@ -18,7 +21,7 @@
         </div>
       </div>
       <div>
-        <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+        <button class="btn waves-effect waves-light red darken-3" type="submit" name="action">Submit
           <i class="material-icons right">send</i>
         </button>
       </div>

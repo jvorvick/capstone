@@ -96,7 +96,6 @@ function filters() {
           tagInstances[0].addChip({
             tag: a.textContent
           })
-          console.log(searchFilters)
           filterGame(searchFilters)
         })
         a.href = '#!'

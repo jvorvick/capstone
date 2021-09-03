@@ -1,5 +1,6 @@
 .hidden {
-  visibility: hidden;
+  display: none;
+  /* visibility: hidden; */
 }
 
 .input-field label {
@@ -12,4 +13,12 @@
 
 img {
   max-width: 100%;
+}
+
+.btn-large {
+  margin-bottom: 1em;
+}
+
+#main {
+  margin-top: 2em;
 }

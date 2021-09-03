@@ -1,4 +1,4 @@
-from django.shortcuts import render, reverse
+from django.shortcuts import redirect, render, reverse
 from django.http import HttpResponse, JsonResponse
 from .models import Collection, Game, Genre, Platform
 from django.shortcuts import get_object_or_404
@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.http.response import HttpResponseRedirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 # Create your views here.
 def home(request):
@@ -20,7 +21,6 @@ def get_game(request, name_and_date):
     # title = Game.objects.filter(name=game)[0]
     game = list(Game.objects.filter(name_and_date=name_and_date).values())
     # title = get_object_or_404(Game, name_and_date=name_and_date)
-    print('get game', game)
     # game = {
     #     'name': title.name,
     #     'cover': title.cover,
@@ -81,7 +81,6 @@ def user_login(request):
         return render(request, 'gamepicker/login.html')
     # user submits form
     elif request.method == 'POST':
-        print('FORM', request.POST)
         
         # get form data
         form = request.POST
@@ -90,10 +89,14 @@ def user_login(request):
 
         # authenticate user
         user = authenticate(request, username=username, password=password)
-        print(user)
-        login(request, user)
-
-    return HttpResponseRedirect(reverse('gamepicker:home'))
+        print('user', user)
+        
+        if user != None:
+            login(request, user)
+            return HttpResponseRedirect(reverse('gamepicker:home'))
+        else:
+            # messages.error(request, 'Username or password is not correct')
+            return render(request, 'gamepicker/login.html', {'user': user})
 
 def user_logout(request):
     logout(request)
@@ -120,6 +123,14 @@ def add_collection(request, id):
         return JsonResponse({}, safe=False)
     else:
         return HttpResponse(status=299)
+
+def remove_collection(request, id):
+    collection = Collection.objects.filter(user=request.user)[0]
+    print(collection)
+    remove_game = get_object_or_404(Game, id=id)
+    print(remove_game)
+    collection.game.remove(remove_game)
+    return JsonResponse({}, safe=False)
 
 def user_games(request):
     collection = Collection.objects.filter(user=request.user)[0]

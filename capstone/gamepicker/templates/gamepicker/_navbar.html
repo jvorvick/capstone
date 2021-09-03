@@ -1,7 +1,8 @@
 <nav>
   <div class="nav-wrapper blue-grey darken-4">
     <a href="{% url 'gamepicker:home' %}" class="brand-logo left"><i class="material-icons">home</i>Game Picker</a>
-    <ul id="nav-mobile" class="right">
+    <a href="#" data-target="mobile-demo" class="sidenav-trigger right hide-on-med-and-up"><i class="material-icons">menu</i></a>
+    <ul id="nav-mobile" class="right hide-on-small-only">
       <li><a href="{% url 'gamepicker:user_page' %}">Collection</a></li>
       <li><a href="{% url 'gamepicker:signup' %}">Signup</a></li>
 
@@ -14,3 +15,15 @@
     </ul>
   </div>
 </nav>
+
+<ul class="sidenav grey lighten-4" id="mobile-demo">
+  <li><a href="{% url 'gamepicker:user_page' %}">Collection</a></li>
+  <li><a href="{% url 'gamepicker:signup' %}">Signup</a></li>
+
+  {% if request.user.is_anonymous == True %}
+  <li><a href="{% url 'gamepicker:login' %}">Login</a></li>
+  {% else %}
+  <li><a href="{% url 'gamepicker:logout' %}">Logout</a></li>
+  {% endif %}
+
+</ul>
