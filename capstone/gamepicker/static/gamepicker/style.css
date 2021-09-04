@@ -3,12 +3,17 @@
   /* visibility: hidden; */
 }
 
+body {
+  min-height: 100vh;
+}
+
 .input-field label {
   color: #212121;
 }
 
 .chips input::placeholder {
   color: #212121;
+  font-size: 1rem;
 }
 
 img {
@@ -21,4 +26,38 @@ img {
 
 #main {
   margin-top: 2em;
+}
+
+input:focus {
+  border-bottom: 1px solid #4f4a8e !important;
+  box-shadow: 0 1px 0 0 #4f4a8e !important;
+}
+
+label.active {
+  color: #4f4a8e !important;
+}
+
+.chips.focus {
+  border-bottom: 1px solid #4f4a8e !important;
+  box-shadow: 0 1px 0 0 #4f4a8e !important;
+}
+
+.progress {
+  background-color: #4f4a8e;
+  margin-top: 3em;
+}
+
+.progress .indeterminate {
+  background-color: #928fba;
+}
+
+.chip {
+  background-color: #dad8e7;
+}
+.chip:focus {
+  background-color: #4f4a8e;
+}
+
+.dropdown-content li a {
+  color: #c62828;
 }

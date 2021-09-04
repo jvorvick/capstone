@@ -68,9 +68,11 @@ def user_signup(request):
         password = form['password']
 
         user = User.objects.create_user(
-            username, password, first_name=first_name, last_name=last_name
+            username=username, password=password, first_name=first_name, last_name=last_name,
         )
-        
+
+        Collection.objects.create(user=user)
+
         login(request, user)
 
         return HttpResponseRedirect(reverse('gamepicker:home'))
@@ -84,13 +86,14 @@ def user_login(request):
         
         # get form data
         form = request.POST
+        print(form)
         username = form['username']
         password = form['password']
 
         # authenticate user
-        user = authenticate(request, username=username, password=password)
-        print('user', user)
+        user = authenticate(username=username, password=password)
         
+        print('user', user)
         if user != None:
             login(request, user)
             return HttpResponseRedirect(reverse('gamepicker:home'))
@@ -111,15 +114,14 @@ def user_page(request):
         'games': games
     }
 
-    print(context)
-
     return render(request, 'gamepicker/user_page.html', context)
 
 def add_collection(request, id):
     if request.user.is_authenticated:
-        collection, _ = Collection.objects.get_or_create(user=request.user)
+        collection = Collection.objects.filter(user=request.user)[0]
         add_game = get_object_or_404(Game, id=id)
         collection.game.add(add_game)
+        # collection.objects.order_by('-game')
         return JsonResponse({}, safe=False)
     else:
         return HttpResponse(status=299)

@@ -7,28 +7,19 @@ const searchFilters = []
 
 function random() {
   randomBtn.addEventListener('click', () => {
-    // const randomGame = gameData[Math.floor(Math.random()*gameData.length)]
-    // filterGame(searchFilters)
-
     const randomGame = function (searchData) {
       const keys = Object.keys(searchData)
       if (keys.length === 0) {
         return false
       }
-      // return gameData[keys[keys.length * Math.random() << 0]]
       return keys[Math.floor(Math.random() * keys.length)]
     }
     const game = randomGame(searchData)
     if (game) {
       getGame(game)
     } else {
-      const container = document.getElementById('container')
-      const main = document.getElementById('main')
-      const message = document.createElement('h5')
+      const message = document.getElementById('no-match')
       message.textContent = 'No games match these filters'
-      message.classList.add('red-text', 'text-darken-3')
-      container.insertBefore(message, main)
-      // alert('No games match these filters.')
     }
   })
 }
@@ -49,17 +40,9 @@ var instances = M.Autocomplete.init(elems, {
     } else if (b.startsWith(inputString)) {
       return 1
     } 
-    // console.log(a, '@@@', b)
     return a.localeCompare(b);
   },
-  
 }); 
-
-
-// searchBar.addEventListener('click', () => {
-//   console.log('hi')
-//   filterGame(searchFilters)
-// })
 
 function filterGame(filters=false) {
   searchData = {}
@@ -76,7 +59,6 @@ function filterGame(filters=false) {
       searchData[game.name_and_date] = null;
     }
   }
-  // game[type].split.(', ').incudes()
   instances[0].updateData(searchData)
 }
 
@@ -94,7 +76,6 @@ function showGame(games) {
   searchResult.innerHTML = ''
 
   for (let game of games) {
-    // const ageRatingCategory = document.createElement('p')
     let ageRatingCategoryText = game.age_rating_category
     const ratingCategories = {
       1 : 'ESRB',
@@ -102,11 +83,7 @@ function showGame(games) {
     }
     
     ageRatingCategoryText = ratingCategories[ageRatingCategoryText] ? ratingCategories[ageRatingCategoryText] + ': ' : ''
-    // ageRatingCategory.textContent = ageRatingCategoryText
 
-
-
-    // const ageRatingRating = document.createElement('p')
     let ageRatingRatingText = game.age_rating_rating
     const ratingRatings = {
       1 : 'Three',
@@ -123,8 +100,6 @@ function showGame(games) {
       12 : 'AO'
     }
     ageRatingRatingText = ratingRatings[ageRatingRatingText] || ''
-    // ageRatingRating.textContent = ageRatingRatingText
-
 
     let div = document.createElement('div')
     div.innerHTML = `
