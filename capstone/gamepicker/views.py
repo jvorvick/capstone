@@ -72,6 +72,7 @@ def user_signup(request):
         )
 
         Collection.objects.create(user=user)
+        # Collection.objects.order_by('game')
 
         login(request, user)
 
@@ -121,7 +122,7 @@ def add_collection(request, id):
         collection = Collection.objects.filter(user=request.user)[0]
         add_game = get_object_or_404(Game, id=id)
         collection.game.add(add_game)
-        # collection.objects.order_by('-game')
+        # Collection.objects.order_by('-game')
         return JsonResponse({}, safe=False)
     else:
         return HttpResponse(status=299)

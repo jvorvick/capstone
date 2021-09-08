@@ -239,8 +239,6 @@ function collectionManage() {
   }
 }
 
-
-
 // sidebar
 document.addEventListener('DOMContentLoaded', function() {
   var elems = document.querySelectorAll('.sidenav');
