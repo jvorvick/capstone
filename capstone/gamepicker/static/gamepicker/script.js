@@ -1,3 +1,5 @@
+const baseUrl = 'http://inyo.pythonanywhere.com/'
+
 let gameData = []
 let searchData = {}
 const randomBtn = document.getElementById('random-btn')
@@ -63,7 +65,7 @@ function filterGame(filters=false) {
 }
 
 function getGame(game) {
-  fetch(`http://localhost:8000/gamepicker/${game}`)
+  fetch(`${baseUrl}/gamepicker/${game}`)
     .then((data) => data.json())
     .then((data) => {
       showGame(data)
@@ -148,10 +150,10 @@ function showGame(games) {
       button.classList.add('disabled')
     }
     button.addEventListener('click', () => {
-      fetch(`http://localhost:8000/gamepicker/collection/${game.id}`)
+      fetch(`${baseUrl}/gamepicker/collection/${game.id}`)
       .then(data => {
         if (data.status == 299) {
-          window.location = 'http://localhost:8000/gamepicker/login/'
+          window.location = `${baseUrl}/gamepicker/login/`
         }
         button.textContent = 'Added'
         button.classList.add('disabled')
@@ -162,13 +164,13 @@ function showGame(games) {
     // change card formation based on window size and page
     const searchCard = searchResult.querySelector('#search-card')
 
-    if (window.outerWidth <= 600 || window.location.href.startsWith('http://localhost:8000/gamepicker/user_page/')) {
+    if (window.outerWidth <= 600 || window.location.href.startsWith(`${baseUrl}/gamepicker/user_page/`)) {
       searchCard.classList.remove('horizontal')
       searchCard.classList.add('vertical')
     }
 
     window.onresize = () => {
-      if (window.outerWidth <= 600 || window.location.href.startsWith('http://localhost:8000/gamepicker/user_page/')) {
+      if (window.outerWidth <= 600 || window.location.href.startsWith(`${baseUrl}/gamepicker/user_page/`)) {
         searchCard.classList.remove('horizontal')
         searchCard.classList.add('vertical')
         console.log("I'm smol", window.innerWidth)
@@ -181,7 +183,7 @@ function showGame(games) {
 }
 
 function getAllGames() {
-  fetch('http://localhost:8000/gamepicker/all')
+  fetch(`${baseUrl}/gamepicker/all`)
     .then((data) => data.json())
     .then((data) => {
       gameData = data
@@ -194,7 +196,7 @@ function getAllGames() {
 }
 
 function getUserGames() {
-  fetch('http://localhost:8000/gamepicker/user_games')
+  fetch(`${baseUrl}/gamepicker/user_games`)
     .then((data) => data.json())
     .then((data) => {
       gameData = data
@@ -229,10 +231,10 @@ function collectionManage() {
     remove.addEventListener('click', () => {
       const game = remove.id
       console.log('remove', game)
-      fetch(`http://localhost:8000/gamepicker/remove_collection/${game}`)
+      fetch(`${baseUrl}/gamepicker/remove_collection/${game}`)
       .then(() => {
         console.log('refresh')
-        window.location = 'http://localhost:8000/gamepicker/user_page/'
+        window.location = `${baseUrl}/gamepicker/user_page/`
       })
     })
     console.log(remove)

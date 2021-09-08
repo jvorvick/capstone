@@ -33,7 +33,7 @@ function filters() {
     });
   });
 
-  fetch('http://localhost:8000/gamepicker/genres')
+  fetch(`${baseUrl}/gamepicker/genres`)
     .then((data) => data.json())
     .then((data) => {
       const dropDown = document.getElementById('dropdown1')
@@ -69,7 +69,7 @@ function filters() {
       }
     })
 
-  fetch('http://localhost:8000/gamepicker/platforms')
+  fetch(`${baseUrl}/gamepicker/platforms`)
     .then((data) => data.json())
     .then((data) => {
       const dropDown = document.getElementById('dropdown2')
