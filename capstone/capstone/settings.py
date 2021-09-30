@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-s)iz_vbc&dzv+cfxtd@)xg8c0)p4-mofs-2=71hkzkvm6zn%r(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://inyo.pythonanywhere.com/gamepicker']
+ALLOWED_HOSTS = ['inyo.pythonanywhere.com']
 
 
 # Application definition
