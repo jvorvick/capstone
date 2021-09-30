@@ -7,11 +7,18 @@
     {% if request.user.is_anonymous == False %}
     <h5>Hello {{request.user}}</h5>
     {% endif %}
-    <div id="loading" class="row">
-      <div class="col s6">
+    <div id="loading">
+      <div class="row">
+      <div id="test" class="col s6">
         <h4>loading...</h4>
         <div class="progress">
           <div class="indeterminate"></div>
+        </div>
+      </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <h5>This is a free domain, so this may take up to a minute.</h5>
         </div>
       </div>
     </div>
